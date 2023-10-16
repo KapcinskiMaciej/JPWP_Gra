@@ -1,4 +1,4 @@
-package Gra;
+package gra;
 
 public class Bohater {
 }
