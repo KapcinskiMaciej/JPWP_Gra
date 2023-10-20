@@ -10,7 +10,7 @@ public class GPanel extends JPanel {
     GPanel (int Frame_x, int Frame_y){
         this.setSize(Frame_x, Frame_y);
         background_img = new ImageIcon("src\\gra\\graphics\\background.png").getImage();
-        enemy_img = new ImageIcon("src\\gra\\graphics\\skull.png").getImage();
+        enemy_img = new ImageIcon("src\\gra\\graphics\\rat.png").getImage();
     }
 
     @Override

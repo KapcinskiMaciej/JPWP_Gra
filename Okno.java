@@ -21,24 +21,37 @@ public class Okno extends JFrame {
     }
 
     private void Interface(int f_x, int f_y){
+        //definicje skladowych interfejsu
         setLayout(new BorderLayout());
         GPanel panel = new GPanel(f_x, f_y);
-        JLabel label = new JLabel();
-        TextField txt = new TextField();
+        JLabel labeldown = new JLabel();
+        JLabel labelup = new JLabel();
+        JTextField txtdown = new JTextField("Tutaj wpisz slowo",1);
+        TextArea txtup = new TextArea("Wyswietlane slowo");
+        JProgressBar hp = new JProgressBar(0,100);
         Font myfont = new Font("Open Sans",Font.BOLD,20);
-        txt.setFont(myfont);
+        txtup.setEditable(false);
+        txtdown.setFont(myfont);
+        hp.setValue(100);
         Button btnstart, btncheck;
         btnstart = new Button("START");
         btncheck = new Button("CHECK");
+        // dolny label
+        labeldown.setBackground(Color.black);
+        labeldown.setLayout(new GridLayout(1,3));
+        labeldown.add(btnstart);
+        labeldown.add(txtdown);
+        labeldown.add(btncheck);
+        labeldown.setPreferredSize(new Dimension(f_x,40));
+        //gorny label
+        labelup.setBackground(Color.black);
+        labelup.setLayout(new GridLayout(1,2));
+        labelup.setPreferredSize(new Dimension(f_x,40));
+        labelup.add(txtup);
+        labelup.add(hp);
 
-        label.setBackground(Color.blue);
-        label.setLayout(new GridLayout(1,3));
-        label.add(btnstart);
-        label.add(txt);
-        label.add(btncheck);
-        label.setPreferredSize(new Dimension(f_x,40));
         add(panel, BorderLayout.CENTER);
-        add(label, BorderLayout.SOUTH);
-
+        add(labeldown, BorderLayout.SOUTH);
+        add(labelup, BorderLayout.NORTH);
     }
 }
