@@ -1,23 +1,20 @@
 package gra;
 
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.HashMap;
 
-public class GLoop implements ActionListener {
-
-    Button btncheck;
+public class GLoop{
 
 
     GLoop(){
-        btncheck.addActionListener(this);
+        HashMap<String,String> words = new HashMap<String,String>();
+
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btncheck){
-
-        }
+    private void AddWord(HashMap<String,String> words){
+        words.put("Kwiat","Flower");
+        words.put("Dom","House");
+        words.put("Banan","Banana");
+        words.put("Noga","Leg");
     }
 }
