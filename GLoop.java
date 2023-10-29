@@ -1,13 +1,10 @@
 package gra;
 
-
 import java.util.HashMap;
-
-public class GLoop{
-
-
+public class GLoop {
     GLoop(){
         HashMap<String,String> words = new HashMap<String,String>();
+        AddWord(words);
 
     }
 
@@ -17,4 +14,6 @@ public class GLoop{
         words.put("Banan","Banana");
         words.put("Noga","Leg");
     }
+
+
 }
