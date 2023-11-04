@@ -2,6 +2,8 @@ package gra;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Okno extends JFrame{
     int f_x=1280;
@@ -9,11 +11,24 @@ public class Okno extends JFrame{
     int hpval = 50;
     Button btnstart;
     JProgressBar hp;
+    int x =0;
     public Okno(String nazwa_okna){
         super(nazwa_okna);
 
         Interface(f_x);
         GPanel panel = new GPanel(f_x, f_y);
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int cur_x = e.getX();
+                int cur_y = e.getY();
+                if(panel.Colision(cur_x,cur_y)){
+                    x+=1;
+                    System.out.println("trafienie " + x);
+                    hpval-=10;
+                }
+            }
+        });
         add(panel, BorderLayout.CENTER);
 
         this.setSize(f_x,f_y);
@@ -60,4 +75,6 @@ public class Okno extends JFrame{
         add(labeldown, BorderLayout.SOUTH);
         add(labelup, BorderLayout.NORTH);
     }
+
+    void Health(){}
 }

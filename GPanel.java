@@ -9,10 +9,10 @@ import static java.lang.System.exit;
 public class GPanel extends JPanel implements ActionListener {
 
 
-    int x =0;
+
     int enemy_x,enemy_y=0;
-    int xVel =2;
-    int yVel =2;
+    int xVel =20;
+    int yVel =20;
     Image background_img;
     Image rat_img;
     Image skull_img;
@@ -27,17 +27,7 @@ public class GPanel extends JPanel implements ActionListener {
         zombie_img = new ImageIcon("src\\gra\\graphics\\zombie.png").getImage();
         timer = new Timer(10,this);
         timer.start();
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int cur_x = e.getX();
-                int cur_y = e.getY();
-                if(Colision(cur_x,cur_y)){
-                    x+=1;
-                    System.out.println("trafienie " + x);
-                }
-            }
-        });
+
     }
 
 
@@ -58,20 +48,28 @@ public class GPanel extends JPanel implements ActionListener {
         enemy_y += yVel;
         repaint();
     }
-    private boolean Colision(int cur_x, int cur_y){
+    boolean Colision(int cur_x, int cur_y){
         boolean hit = false;
-        Rectangle hitbox= new Rectangle(enemy_x,enemy_y,rat_img.getWidth(null),rat_img.getHeight(null));
-        if(hitbox.contains(cur_x,cur_y)){
+        if(cur_x >= enemy_x && cur_x <= enemy_x+rat_img.getWidth(null) && cur_y >= enemy_y &&
+                cur_y <= enemy_y+rat_img.getHeight(null)){
             hit = true;
         }
         return hit;
     }
+
+    /*private void Wordcheck(){
+        String word;
+        GLoop gloop = new GLoop(;
+        if(word == gloop.){
+
+        }
+    }*/
     @Override
     public void actionPerformed(ActionEvent e) {
         time+=1;
         Loop();
         //if(time>1000){
-       //     exit(1);
-       // }
+        //     exit(1);
+        // }
     }
 }
