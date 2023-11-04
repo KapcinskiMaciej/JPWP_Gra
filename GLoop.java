@@ -5,7 +5,6 @@ public class GLoop {
     GLoop(){
         HashMap<String,String> words = new HashMap<String,String>();
         AddWord(words);
-
     }
 
     private void AddWord(HashMap<String,String> words){
