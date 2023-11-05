@@ -3,6 +3,7 @@ package gra;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 import static java.lang.System.exit;
 
@@ -11,8 +12,8 @@ public class GPanel extends JPanel implements ActionListener {
 
 
     int enemy_x,enemy_y=0;
-    int xVel =20;
-    int yVel =20;
+    int xVel =2;
+    int yVel =3;
     Image background_img;
     Image rat_img;
     Image skull_img;
@@ -57,19 +58,23 @@ public class GPanel extends JPanel implements ActionListener {
         return hit;
     }
 
-    /*private void Wordcheck(){
-        String word;
-        GLoop gloop = new GLoop(;
-        if(word == gloop.){
-
+    public void Wordset(TextField txtup){
+        GLoop gloop = new GLoop();
+        String inpword = "Kwiat";
+        txtup.setText(gloop.words.get(inpword));
+    }
+    public boolean Wordcheck(TextField txtdown){
+        boolean contains = false;
+        String inpword = txtdown.getText();
+        GLoop gloop = new GLoop();
+        if(gloop.words.containsKey(inpword)){
+            contains=true;
         }
-    }*/
+        return contains;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         time+=1;
         Loop();
-        //if(time>1000){
-        //     exit(1);
-        // }
     }
 }

@@ -2,7 +2,7 @@ package gra;
 
 import java.util.HashMap;
 public class GLoop {
-    HashMap<String,String> words = new HashMap<String,String>();
+    HashMap<String,String> words = new HashMap<>();
     GLoop(){
         AddWord(words);
     }

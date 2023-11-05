@@ -8,54 +8,49 @@ import java.awt.event.MouseEvent;
 public class Okno extends JFrame{
     int f_x=1280;
     int f_y=720;
-    int hpval = 50;
-    Button btnstart;
     JProgressBar hp;
-    int x =0;
+    int hpval=100;
     public Okno(String nazwa_okna){
         super(nazwa_okna);
-
-        Interface(f_x);
         GPanel panel = new GPanel(f_x, f_y);
-        panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                int cur_x = e.getX();
-                int cur_y = e.getY();
-                if(panel.Colision(cur_x,cur_y)){
-                    x+=1;
-                    System.out.println("trafienie " + x);
-                    hpval-=10;
-                }
-            }
-        });
+        TextField txtup = new TextField();
+        TextField txtdown = new TextField("Tutaj wpisz slowo", 1);
+        panel.Wordset(txtup);
+        Interface(f_x,hpval,txtup,txtdown);
         add(panel, BorderLayout.CENTER);
-
         this.setSize(f_x,f_y);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int cur_x = e.getX();
+                int cur_y = e.getY();
+                Hit(cur_x,cur_y,panel,txtdown);
+            }
+        });
     }
 
-    public void Interface(int f_x) {
+    public void Interface(int f_x, int hpval,TextField txtup,TextField txtdown) {
         //definicje skladowych interfejsu
         setLayout(new BorderLayout());
-        btnstart = new Button("RESTART");
-
-        JTextField txtdown = new JTextField("Tutaj wpisz slowo", 1);
-        JTextField txtup = new JTextField("Wyswietlane slowo");
-        hp = new JProgressBar(0, 100);
+        Button btnstart = new Button("RESTART");
         Font myfont = new Font("Open Sans", Font.BOLD, 20);
-
+        hp = new JProgressBar(0, 100);
+        hp.setStringPainted(true);
+        hp.setForeground(Color.red);
+        hp.setBackground(Color.lightGray);
+        hp.setValue(hpval);
+        hp.setFont(myfont);
         txtdown.setFont(myfont);
         txtup.setEditable(false);
         txtup.setFont(myfont);
-        hp.setValue(hpval);
-
         Labels(btnstart, txtdown, txtup, hp, f_x);
     }
-    public void Labels(Button btnstart, JTextField txtdown, JTextField txtup, JProgressBar hp, int f_x) {
+    public void Labels(Button btnstart, TextField txtdown, TextField txtup, JProgressBar hp, int f_x) {
         JLabel labeldown = new JLabel();
         JLabel labelup = new JLabel();
 
@@ -76,5 +71,11 @@ public class Okno extends JFrame{
         add(labelup, BorderLayout.NORTH);
     }
 
-    void Health(){}
+    private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown){
+        if(panel.Colision(cur_x,cur_y) && panel.Wordcheck(txtdown)){
+            hpval-=10;
+            System.out.println(hpval);
+            hp.setValue(hpval);
+        }
+    }
 }
