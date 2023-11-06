@@ -2,6 +2,7 @@ package gra;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,9 +16,9 @@ public class Okno extends JFrame{
         GPanel panel = new GPanel(f_x, f_y);
         TextField txtup = new TextField();
         TextField txtdown = new TextField("Tutaj wpisz slowo", 1);
-        panel.Wordset(txtup);
         Interface(f_x,hpval,txtup,txtdown);
         add(panel, BorderLayout.CENTER);
+        panel.Wordset(txtup);
         this.setSize(f_x,f_y);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -29,12 +30,12 @@ public class Okno extends JFrame{
             public void mousePressed(MouseEvent e) {
                 int cur_x = e.getX();
                 int cur_y = e.getY();
-                Hit(cur_x,cur_y,panel,txtdown);
+                Hit(cur_x,cur_y,panel,txtdown,txtup);
             }
         });
     }
 
-    public void Interface(int f_x, int hpval,TextField txtup,TextField txtdown) {
+    private void Interface(int f_x, int hpval,TextField txtup,TextField txtdown) {
         //definicje skladowych interfejsu
         setLayout(new BorderLayout());
         Button btnstart = new Button("RESTART");
@@ -50,7 +51,7 @@ public class Okno extends JFrame{
         txtup.setFont(myfont);
         Labels(btnstart, txtdown, txtup, hp, f_x);
     }
-    public void Labels(Button btnstart, TextField txtdown, TextField txtup, JProgressBar hp, int f_x) {
+    private void Labels(Button btnstart, TextField txtdown, TextField txtup, JProgressBar hp, int f_x) {
         JLabel labeldown = new JLabel();
         JLabel labelup = new JLabel();
 
@@ -71,11 +72,19 @@ public class Okno extends JFrame{
         add(labelup, BorderLayout.NORTH);
     }
 
-    private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown){
-        if(panel.Colision(cur_x,cur_y) && panel.Wordcheck(txtdown)){
-            hpval-=10;
+    private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown, TextField txtup){
+        if(panel.Colision(cur_x,cur_y) && panel.Wordcheck(txtdown,txtup)){
+            hpval-=20;
             System.out.println(hpval);
             hp.setValue(hpval);
+            Dead(hpval);
+            panel.Wordset(txtup);
         }
     }
+    private void Dead(int hpval){
+        if(hpval<=0){
+            System.out.println("koniec");
+        }
+    }
+
 }

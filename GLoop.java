@@ -8,9 +8,9 @@ public class GLoop {
     }
 
     private void AddWord(HashMap<String,String> words){
-        words.put("Kwiat","Flower");
-        words.put("Dom","House");
-        words.put("Banan","Banana");
-        words.put("Noga","Leg");
+        words.put("Flower","Kwiat");
+        words.put("House","Dom");
+        words.put("Car","Auto");
+        words.put("Leg","Noga");
     }
 }

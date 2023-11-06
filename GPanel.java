@@ -3,23 +3,24 @@ package gra;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
-import static java.lang.System.exit;
+
 
 public class GPanel extends JPanel implements ActionListener {
 
 
 
     int enemy_x,enemy_y=0;
-    int xVel =2;
-    int yVel =3;
+    int xVel =3;
+    int yVel =5;
     Image background_img;
     Image rat_img;
     Image skull_img;
     Image zombie_img;
     Timer timer;
-    int time=0;
     GPanel(int Frame_x, int Frame_y) {
         this.setSize(Frame_x, Frame_y);
         background_img = new ImageIcon("src\\gra\\graphics\\background.png").getImage();
@@ -50,31 +51,30 @@ public class GPanel extends JPanel implements ActionListener {
         repaint();
     }
     boolean Colision(int cur_x, int cur_y){
-        boolean hit = false;
-        if(cur_x >= enemy_x && cur_x <= enemy_x+rat_img.getWidth(null) && cur_y >= enemy_y &&
-                cur_y <= enemy_y+rat_img.getHeight(null)){
-            hit = true;
-        }
+        boolean hit = cur_x >= enemy_x && cur_x <= enemy_x + rat_img.getWidth(null) && cur_y >= enemy_y &&
+                cur_y <= enemy_y + rat_img.getHeight(null);
         return hit;
     }
 
     public void Wordset(TextField txtup){
         GLoop gloop = new GLoop();
-        String inpword = "Kwiat";
-        txtup.setText(gloop.words.get(inpword));
+        Random r = new Random();
+        ArrayList<String> keys = new ArrayList<>(gloop.words.keySet());
+        String outpword = gloop.words.get(keys.get(r.nextInt(keys.size())));
+        //txtup.setText(gloop.words.get(outpword));
+        txtup.setText(outpword);
     }
-    public boolean Wordcheck(TextField txtdown){
+    public boolean Wordcheck(TextField txtdown, TextField txtup){
         boolean contains = false;
         String inpword = txtdown.getText();
         GLoop gloop = new GLoop();
-        if(gloop.words.containsKey(inpword)){
+        if(Objects.equals(gloop.words.get(inpword), txtup.getText())){
             contains=true;
         }
         return contains;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        time+=1;
         Loop();
     }
 }
