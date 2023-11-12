@@ -6,21 +6,15 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
-
-
-
 public class GPanel extends JPanel implements ActionListener {
-
-
-
     int enemy_x,enemy_y=0;
-    int xVel =3;
-    int yVel =5;
-    Image background_img;
-    Image rat_img;
-    Image skull_img;
-    Image zombie_img;
+    int xVel=5;
+    int yVel=3;
+    int dmg;
+    Image background_img,rat_img,skull_img,zombie_img,curimg;
     Timer timer;
+    int gamestatus = 1;
+    int level = 1;
     GPanel(int Frame_x, int Frame_y) {
         this.setSize(Frame_x, Frame_y);
         background_img = new ImageIcon("src\\gra\\graphics\\background.png").getImage();
@@ -29,7 +23,7 @@ public class GPanel extends JPanel implements ActionListener {
         zombie_img = new ImageIcon("src\\gra\\graphics\\zombie.png").getImage();
         timer = new Timer(10,this);
         timer.start();
-
+        Level(level);
     }
 
 
@@ -37,44 +31,79 @@ public class GPanel extends JPanel implements ActionListener {
     public void paint(Graphics g) {
         Graphics2D gr2D = (Graphics2D) g;
         gr2D.drawImage(background_img, 0, 0, this.getWidth(), this.getHeight(), null);
-        gr2D.drawImage(rat_img, enemy_x, enemy_y, null);
+        gr2D.drawImage(Images(curimg, level), enemy_x, enemy_y, null);
     }
-    private void Loop(){
-        if(enemy_x>this.getWidth() - rat_img.getWidth(null) || enemy_x< 0){
-            xVel *= -1;
-        }
-        if(enemy_y>this.getHeight() - rat_img.getHeight(null)|| enemy_y<0){
-            yVel *= -1;
-        }
-        enemy_x += xVel;
-        enemy_y += yVel;
-        repaint();
-    }
-    boolean Colision(int cur_x, int cur_y){
-        boolean hit = cur_x >= enemy_x && cur_x <= enemy_x + rat_img.getWidth(null) && cur_y >= enemy_y &&
-                cur_y <= enemy_y + rat_img.getHeight(null);
-        return hit;
-    }
+    private void Loop(int status){
+        if(status == 1) {
 
-    public void Wordset(TextField txtup){
-        GLoop gloop = new GLoop();
-        Random r = new Random();
-        ArrayList<String> keys = new ArrayList<>(gloop.words.keySet());
-        String outpword = gloop.words.get(keys.get(r.nextInt(keys.size())));
-        //txtup.setText(gloop.words.get(outpword));
-        txtup.setText(outpword);
-    }
-    public boolean Wordcheck(TextField txtdown, TextField txtup){
-        boolean contains = false;
-        String inpword = txtdown.getText();
-        GLoop gloop = new GLoop();
-        if(Objects.equals(gloop.words.get(inpword), txtup.getText())){
-            contains=true;
+            if (enemy_x > this.getWidth() - Images(curimg, level).getWidth(null) || enemy_x < 0) {
+                xVel *= -1;
+            }
+            if (enemy_y > this.getHeight() - Images(curimg, level).getHeight(null) || enemy_y < 0) {
+                yVel *= -1;
+            }
+            enemy_x += xVel;
+            enemy_y += yVel;
+            repaint();
         }
-        return contains;
+    }
+    boolean Colision(int cur_x, int cur_y) {
+        return cur_x >= enemy_x && cur_x <= enemy_x + Images(curimg, level).getWidth(null) && cur_y >= enemy_y &&
+                cur_y <= enemy_y + Images(curimg, level).getHeight(null);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        Loop();
+        Loop(gamestatus);
+    }
+    void WhatNext(JProgressBar hp){
+        gamestatus = 0;
+        int answer = JOptionPane.showConfirmDialog(null,
+             "Pokonano przeciwnika! Chcesz kontynuować? (Gram dalej! - Yes, Chce zakończyć grę - No)",
+             "GRATULACJE!!!",JOptionPane.YES_NO_OPTION);
+        switch (answer) {
+            case 0 -> {
+                hp.setValue(100);
+                System.out.println("Gramy dalej");
+                level+=1;
+                Level(level);
+            }
+            case 1 -> System.exit(0);
+        }
+    }
+    Image Images(Image curimg, int level){
+        switch(level){
+            case 1, 3 -> {
+                curimg = rat_img;
+            }
+            case 2 -> curimg = skull_img;
+        }
+        repaint();
+        return curimg;
+    }
+    void Level(int level){
+        switch(level){
+            case 1 -> {
+                dmg =50;
+                enemy_y=0;
+                enemy_x=0;
+                xVel = 3;
+                yVel = 5;
+            }
+            case 2 -> {
+                dmg = 25;
+                enemy_y=0;
+                enemy_x=0;
+                xVel = 6;
+                yVel = 10;
+            }
+            case 3 -> {
+                dmg = 20;
+                enemy_y=0;
+                enemy_x=0;
+                xVel = 12;
+                yVel = 20;
+            }
+        }
+        gamestatus =1;
     }
 }

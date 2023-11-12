@@ -2,7 +2,6 @@ package gra;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,13 +13,14 @@ public class Okno extends JFrame{
     public Okno(String nazwa_okna){
         super(nazwa_okna);
         GPanel panel = new GPanel(f_x, f_y);
+        GLoop gloop = new GLoop();
         TextField txtup = new TextField();
         TextField txtdown = new TextField("Tutaj wpisz slowo", 1);
         Interface(f_x,hpval,txtup,txtdown);
         add(panel, BorderLayout.CENTER);
-        panel.Wordset(txtup);
+        gloop.Wordset(txtup);
         this.setSize(f_x,f_y);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -30,7 +30,7 @@ public class Okno extends JFrame{
             public void mousePressed(MouseEvent e) {
                 int cur_x = e.getX();
                 int cur_y = e.getY();
-                Hit(cur_x,cur_y,panel,txtdown,txtup);
+                Hit(cur_x,cur_y,panel,txtdown,txtup, gloop);
             }
         });
     }
@@ -72,19 +72,18 @@ public class Okno extends JFrame{
         add(labelup, BorderLayout.NORTH);
     }
 
-    private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown, TextField txtup){
-        if(panel.Colision(cur_x,cur_y) && panel.Wordcheck(txtdown,txtup)){
-            hpval-=20;
-            System.out.println(hpval);
+    private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown, TextField txtup, GLoop gloop){
+        if(panel.Colision(cur_x,cur_y) && gloop.Wordcheck(txtdown,txtup)){
+            System.out.println(panel.dmg);
+            hpval-=panel.dmg;
             hp.setValue(hpval);
-            Dead(hpval);
-            panel.Wordset(txtup);
+            Dead(hpval, panel, hp);
+            gloop.Wordset(txtup);
         }
     }
-    private void Dead(int hpval){
+    private void Dead(int hpval, GPanel panel, JProgressBar hp){
         if(hpval<=0){
-            System.out.println("koniec");
+            panel.WhatNext(hp);
         }
     }
-
 }
