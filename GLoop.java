@@ -6,10 +6,16 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
+
+
 public class GLoop {
+    HashMap<String,String> cur_words = new HashMap<>();
     HashMap<String,String> words = new HashMap<>();
+    HashMap<String,String> words2 = new HashMap<>();
+    //HashMap<String,String> words3 = new HashMap<>();
     GLoop(){
         AddWord(words);
+        AddWord2(words2);
     }
 
     private void AddWord(HashMap<String,String> words){
@@ -17,12 +23,22 @@ public class GLoop {
         words.put("House","Dom");
         words.put("Car","Auto");
         words.put("Leg","Noga");
+        words.put("Egg","Jajko");
+        words.put("Bread","Chleb");
+        words.put("Eye","Oko");
+        words.put("Mouth","Usta");
+        words.put("Ear","Ucho");
+    }
+    private void AddWord2(HashMap<String,String> words2){
+        words2.put("Attic","Strych");
+        words2.put("Roof","Dach");
+        words2.put("Fireplace","Kominek");
+        words2.put("Washing Machine","Pralka");
     }
     void Wordset(TextField txtup){
         Random r = new Random();
-        ArrayList<String> keys = new ArrayList<>(this.words.keySet());
-        String outpword = this.words.get(keys.get(r.nextInt(keys.size())));
-        //txtup.setText(gloop.words.get(outpword));
+        ArrayList<String> keys = new ArrayList<>(words.keySet());
+        String outpword = words.get(keys.get(r.nextInt(keys.size())));
         txtup.setText(outpword);
     }
     boolean Wordcheck(TextField txtdown, TextField txtup){

@@ -9,14 +9,13 @@ public class Okno extends JFrame{
     int f_x=1280;
     int f_y=720;
     JProgressBar hp;
-    int hpval=100;
     public Okno(String nazwa_okna){
         super(nazwa_okna);
         GPanel panel = new GPanel(f_x, f_y);
         GLoop gloop = new GLoop();
         TextField txtup = new TextField();
         TextField txtdown = new TextField("Tutaj wpisz slowo", 1);
-        Interface(f_x,hpval,txtup,txtdown);
+        Interface(f_x,txtup,txtdown);
         add(panel, BorderLayout.CENTER);
         gloop.Wordset(txtup);
         this.setSize(f_x,f_y);
@@ -35,7 +34,7 @@ public class Okno extends JFrame{
         });
     }
 
-    private void Interface(int f_x, int hpval,TextField txtup,TextField txtdown) {
+    private void Interface(int f_x,TextField txtup,TextField txtdown) {
         //definicje skladowych interfejsu
         setLayout(new BorderLayout());
         Button btnstart = new Button("RESTART");
@@ -44,7 +43,7 @@ public class Okno extends JFrame{
         hp.setStringPainted(true);
         hp.setForeground(Color.red);
         hp.setBackground(Color.lightGray);
-        hp.setValue(hpval);
+        hp.setValue(100);
         hp.setFont(myfont);
         txtdown.setFont(myfont);
         txtup.setEditable(false);
@@ -74,16 +73,15 @@ public class Okno extends JFrame{
 
     private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown, TextField txtup, GLoop gloop){
         if(panel.Colision(cur_x,cur_y) && gloop.Wordcheck(txtdown,txtup)){
-            System.out.println(panel.dmg);
-            hpval-=panel.dmg;
-            hp.setValue(hpval);
-            Dead(hpval, panel, hp);
+            hp.setValue(hp.getValue()-panel.dmg);
+            Dead(panel, hp);
             gloop.Wordset(txtup);
         }
     }
-    private void Dead(int hpval, GPanel panel, JProgressBar hp){
-        if(hpval<=0){
-            panel.WhatNext(hp);
+    private void Dead(GPanel panel, JProgressBar hp){
+        if(hp.getValue()<=0){
+            panel.WhatNext();
+            hp.setValue(100);
         }
     }
 }
