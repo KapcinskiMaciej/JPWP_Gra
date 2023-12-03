@@ -4,20 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 public class GPanel extends JPanel implements ActionListener {
-    int enemy_x,enemy_y=0;
-    int xVel=0;
-    int yVel=0;
-    int dmg;
-    Image background_img,rat_img,skull_img,zombie_img,curimg;
+    Image background_img,curimg;
     Timer timer;
     int gamestatus = 1;
     int level = 1;
+    GEnemy enemy = new GEnemy();
     GPanel(int Frame_x, int Frame_y) {
         this.setSize(Frame_x, Frame_y);
         background_img = new ImageIcon("src\\gra\\graphics\\background.png").getImage();
-        rat_img = new ImageIcon("src\\gra\\graphics\\rat.png").getImage();
-        skull_img = new ImageIcon("src\\gra\\graphics\\skull.png").getImage();
-        zombie_img = new ImageIcon("src\\gra\\graphics\\zombie.png").getImage();
         timer = new Timer(10,this);
         timer.start();
         Level(level);
@@ -28,25 +22,25 @@ public class GPanel extends JPanel implements ActionListener {
     public void paint(Graphics g) {
         Graphics2D gr2D = (Graphics2D) g;
         gr2D.drawImage(background_img, 0, 0, this.getWidth(), this.getHeight(), null);
-        gr2D.drawImage(Images(curimg, level), enemy_x, enemy_y, null);
+        gr2D.drawImage(enemy.Images(curimg, level), enemy.x, enemy.y, null);
     }
     private void Loop(int status){
         if(status == 1) {
 
-            if (enemy_x > this.getWidth() - Images(curimg, level).getWidth(null) || enemy_x < 0) {
-                xVel *= -1;
+            if (enemy.x > this.getWidth() - enemy.Images(curimg, level).getWidth(null) || enemy.x < 0) {
+                enemy.xVel *= -1;
             }
-            if (enemy_y > this.getHeight() - Images(curimg, level).getHeight(null) || enemy_y < 0) {
-                yVel *= -1;
+            if (enemy.y > this.getHeight() - enemy.Images(curimg, level).getHeight(null) || enemy.y < 0) {
+                enemy.yVel *= -1;
             }
-            enemy_x += xVel;
-            enemy_y += yVel;
+            enemy.x += enemy.xVel;
+            enemy.y += enemy.yVel;
             repaint();
         }
     }
     boolean Colision(int cur_x, int cur_y) {
-        return cur_x >= enemy_x && cur_x <= enemy_x + Images(curimg, level).getWidth(null) && cur_y >= enemy_y &&
-                cur_y <= enemy_y + Images(curimg, level).getHeight(null);
+        return cur_x >= enemy.x && cur_x <= enemy.x + enemy.Images(curimg, level).getWidth(null) &&
+                cur_y >= enemy.y && cur_y <= enemy.y + enemy.Images(curimg, level).getHeight(null);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -72,39 +66,30 @@ public class GPanel extends JPanel implements ActionListener {
             case 1 -> System.exit(0);
         }
     }
-    Image Images(Image curimg, int level){
-        switch(level){
-            case 1, 3 -> curimg = rat_img;
-            case 2 -> curimg = skull_img;
-        }
-        repaint();
-        return curimg;
-    }
     void Level(int level){
         switch(level){
             case 1 -> {
-                dmg =100;
-                enemy_y=0;
-                enemy_x=0;
-                xVel = 3;
-                yVel = 5;
+                enemy.dmg =50;
+                enemy.y=0;
+                enemy.x=0;
+                enemy.xVel = 6;
+                enemy.yVel = 5;
             }
             case 2 -> {
-                dmg = 100;
-                enemy_y=0;
-                enemy_x=0;
-                xVel = 6;
-                yVel = 10;
+                enemy.dmg = 25;
+                enemy.y=0;
+                enemy.x=0;
+                enemy.xVel = 10;
+                enemy.yVel = 11;
             }
             case 3 -> {
-                dmg = 100;
-                enemy_y=0;
-                enemy_x=0;
-                xVel = 12;
-                yVel = 20;
+                enemy.dmg = 20;
+                enemy.y=0;
+                enemy.x=0;
+                enemy.xVel = 15;
+                enemy.yVel = 16;
             }
         }
         gamestatus =1;
     }
-
 }

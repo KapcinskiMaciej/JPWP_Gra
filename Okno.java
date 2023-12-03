@@ -6,16 +6,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Okno extends JFrame{
-    int f_x=1280;
-    int f_y=720;
-    JProgressBar hp;
-    public Okno(String nazwa_okna){
+    Okno(String nazwa_okna){
         super(nazwa_okna);
+        int f_x = 1280;
+        int f_y=720;
+        JProgressBar hp = new JProgressBar(0, 100);
         GPanel panel = new GPanel(f_x, f_y);
         GLoop gloop = new GLoop();
         TextField txtup = new TextField();
         TextField txtdown = new TextField("Tutaj wpisz slowo", 1);
-        Interface(f_x,txtup,txtdown);
+        Interface(f_x,txtup,txtdown, hp);
         add(panel, BorderLayout.CENTER);
         gloop.Wordset(txtup);
         this.setSize(f_x,f_y);
@@ -29,17 +29,16 @@ public class Okno extends JFrame{
             public void mousePressed(MouseEvent e) {
                 int cur_x = e.getX();
                 int cur_y = e.getY();
-                Hit(cur_x,cur_y,panel,txtdown,txtup, gloop);
+                Hit(cur_x,cur_y,panel,txtdown,txtup, gloop, hp);
             }
         });
     }
 
-    private void Interface(int f_x,TextField txtup,TextField txtdown) {
+    private void Interface(int f_x,TextField txtup,TextField txtdown, JProgressBar hp) {
         //definicje skladowych interfejsu
         setLayout(new BorderLayout());
         Button btnstart = new Button("RESTART");
         Font myfont = new Font("Open Sans", Font.BOLD, 20);
-        hp = new JProgressBar(0, 100);
         hp.setStringPainted(true);
         hp.setForeground(Color.red);
         hp.setBackground(Color.lightGray);
@@ -71,9 +70,10 @@ public class Okno extends JFrame{
         add(labelup, BorderLayout.NORTH);
     }
 
-    private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown, TextField txtup, GLoop gloop){
+    private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown, TextField txtup, GLoop gloop, JProgressBar hp)
+    {
         if(panel.Colision(cur_x,cur_y) && gloop.Wordcheck(txtdown,txtup)){
-            hp.setValue(hp.getValue()-panel.dmg);
+            hp.setValue(hp.getValue()-panel.enemy.dmg);
             Dead(panel, hp);
             gloop.Wordset(txtup);
         }

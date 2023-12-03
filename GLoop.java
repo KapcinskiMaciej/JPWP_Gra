@@ -9,7 +9,6 @@ import java.util.Random;
 
 
 public class GLoop {
-    HashMap<String,String> cur_words = new HashMap<>();
     HashMap<String,String> words = new HashMap<>();
     HashMap<String,String> words2 = new HashMap<>();
     //HashMap<String,String> words3 = new HashMap<>();
