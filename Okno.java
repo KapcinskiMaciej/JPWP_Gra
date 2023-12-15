@@ -2,10 +2,13 @@ package gra;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Okno extends JFrame{
+public class Okno extends JFrame implements ActionListener{
+    JMenuItem exit = new JMenuItem("EXIT");
     Okno(String nazwa_okna){
         super(nazwa_okna);
         int f_x = 1280;
@@ -15,14 +18,15 @@ public class Okno extends JFrame{
         GLoop gloop = new GLoop();
         TextField txtup = new TextField();
         TextField txtdown = new TextField("Tutaj wpisz slowo", 1);
-        Interface(f_x,txtup,txtdown, hp);
+        Interface(f_x,txtup,txtdown, hp, exit);
         add(panel, BorderLayout.CENTER);
-        gloop.Wordset(txtup);
         this.setSize(f_x,f_y);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+
+        gloop.Wordset(txtup);
 
         panel.addMouseListener(new MouseAdapter() {
             @Override
@@ -34,11 +38,17 @@ public class Okno extends JFrame{
         });
     }
 
-    private void Interface(int f_x,TextField txtup,TextField txtdown, JProgressBar hp) {
+    private void Interface(int f_x,TextField txtup,TextField txtdown, JProgressBar hp, JMenuItem exit) {
         //definicje skladowych interfejsu
         setLayout(new BorderLayout());
-        Button btnstart = new Button("RESTART");
         Font myfont = new Font("Open Sans", Font.BOLD, 20);
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("MENU");
+        menu.setFont(myfont);
+        menu.setPreferredSize(new Dimension(f_x/2, 40));
+        menu.add(exit);
+        exit.addActionListener(this);
+        menuBar.add(menu);
         hp.setStringPainted(true);
         hp.setForeground(Color.red);
         hp.setBackground(Color.lightGray);
@@ -47,16 +57,16 @@ public class Okno extends JFrame{
         txtdown.setFont(myfont);
         txtup.setEditable(false);
         txtup.setFont(myfont);
-        Labels(btnstart, txtdown, txtup, hp, f_x);
+        Labels(menuBar, txtdown, txtup, hp, f_x);
     }
-    private void Labels(Button btnstart, TextField txtdown, TextField txtup, JProgressBar hp, int f_x) {
+    private void Labels(JMenuBar menu, TextField txtdown, TextField txtup, JProgressBar hp, int f_x) {
         JLabel labeldown = new JLabel();
         JLabel labelup = new JLabel();
 
         //donly label
         labeldown.setBackground(Color.black);
         labeldown.setLayout(new GridLayout(1, 3));
-        labeldown.add(btnstart);
+        labeldown.add(menu);
         labeldown.add(txtdown);
         labeldown.setPreferredSize(new Dimension(f_x, 40));
         //gorny label
@@ -82,6 +92,13 @@ public class Okno extends JFrame{
         if(hp.getValue()<=0){
             panel.WhatNext();
             hp.setValue(100);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==exit){
+            System.exit(1);
         }
     }
 }
