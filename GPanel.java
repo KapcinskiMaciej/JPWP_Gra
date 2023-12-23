@@ -62,6 +62,7 @@ public class GPanel extends JPanel implements ActionListener {
                 System.out.println("Gramy dalej");
                 gloop.level+=1;
                 Level(gloop.level);
+                System.out.println(gloop.curwords);
             }
             case 1 -> System.exit(0);
         }
@@ -69,7 +70,8 @@ public class GPanel extends JPanel implements ActionListener {
     void Level(int level){
         switch(level){
             case 1 -> {
-
+                gloop.curwords.clear();
+                gloop.curwords.putAll(gloop.words);
                 enemy.dmg =50;
                 enemy.y=0;
                 enemy.x=0;
@@ -77,7 +79,8 @@ public class GPanel extends JPanel implements ActionListener {
                 enemy.yVel = 5;
             }
             case 2 -> {
-
+                gloop.curwords.clear();
+                gloop.curwords.putAll(gloop.words2);
                 enemy.dmg = 25;
                 enemy.y=0;
                 enemy.x=0;
@@ -85,7 +88,8 @@ public class GPanel extends JPanel implements ActionListener {
                 enemy.yVel = 11;
             }
             case 3 -> {
-
+                gloop.curwords.clear();
+                gloop.curwords.putAll(gloop.words3);
                 enemy.dmg = 20;
                 enemy.y=0;
                 enemy.x=0;

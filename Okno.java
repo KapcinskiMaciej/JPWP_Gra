@@ -26,7 +26,7 @@ public class Okno extends JFrame implements ActionListener{
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
-        gloop.Wordset(txtup);
+        gloop.Wordset(txtup,gloop.curwords);
 
         panel.addMouseListener(new MouseAdapter() {
             @Override
@@ -82,10 +82,10 @@ public class Okno extends JFrame implements ActionListener{
 
     private void Hit(int cur_x,int cur_y, GPanel panel, TextField txtdown, TextField txtup, GLoop gloop, JProgressBar hp)
     {
-        if(panel.Colision(cur_x,cur_y) && gloop.Wordcheck(txtdown,txtup)){
+        if(panel.Colision(cur_x,cur_y) && gloop.Wordcheck(txtdown,txtup,gloop.curwords)){
             hp.setValue(hp.getValue()-panel.enemy.dmg);
             Dead(panel, hp);
-            gloop.Wordset(txtup);
+            gloop.Wordset(txtup, gloop.curwords);
         }
     }
     private void Dead(GPanel panel, JProgressBar hp){
