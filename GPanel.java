@@ -7,13 +7,14 @@ public class GPanel extends JPanel implements ActionListener {
     Image background_img,curimg;
     Timer timer;
     GEnemy enemy = new GEnemy();
-    GLoop gloop = new GLoop();
+    GWords gwords = new GWords();
+
     GPanel(int Frame_x, int Frame_y) {
         this.setSize(Frame_x, Frame_y);
         background_img = new ImageIcon("src\\gra\\graphics\\background.png").getImage();
         timer = new Timer(10,this);
         timer.start();
-        Level(gloop.level);
+        Level(gwords.level);
     }
 
 
@@ -21,15 +22,15 @@ public class GPanel extends JPanel implements ActionListener {
     public void paint(Graphics g) {
         Graphics2D gr2D = (Graphics2D) g;
         gr2D.drawImage(background_img, 0, 0, this.getWidth(), this.getHeight(), null);
-        gr2D.drawImage(enemy.Images(curimg, gloop.level), enemy.x, enemy.y, null);
+        gr2D.drawImage(enemy.Images(curimg, this.gwords.level), enemy.x, enemy.y, null);
     }
     private void Loop(int status){
         if(status == 1) {
 
-            if (enemy.x > this.getWidth() - enemy.Images(curimg, gloop.level).getWidth(null) || enemy.x < 0) {
+            if (enemy.x > this.getWidth() - enemy.Images(curimg, gwords.level).getWidth(null) || enemy.x < 0) {
                 enemy.xVel *= -1;
             }
-            if (enemy.y > this.getHeight() - enemy.Images(curimg, gloop.level).getHeight(null) || enemy.y < 0) {
+            if (enemy.y > this.getHeight() - enemy.Images(curimg, gwords.level).getHeight(null) || enemy.y < 0) {
                 enemy.yVel *= -1;
             }
             enemy.x += enemy.xVel;
@@ -38,17 +39,16 @@ public class GPanel extends JPanel implements ActionListener {
         }
     }
     boolean Colision(int cur_x, int cur_y) {
-        return cur_x >= enemy.x && cur_x <= enemy.x + enemy.Images(curimg, gloop.level).getWidth(null) &&
-                cur_y >= enemy.y && cur_y <= enemy.y + enemy.Images(curimg, gloop.level).getHeight(null);
+        return cur_x >= enemy.x && cur_x <= enemy.x + enemy.Images(curimg, gwords.level).getWidth(null) &&
+                cur_y >= enemy.y && cur_y <= enemy.y + enemy.Images(curimg, gwords.level).getHeight(null);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        Loop(gloop.gamestatus);
-
+        Loop(gwords.gamestatus);
     }
     void WhatNext(){
-        gloop.gamestatus = 0;
-        if(gloop.level == 3){
+        gwords.gamestatus = 0;
+        if(gwords.level == 3){
             JOptionPane.showConfirmDialog(null,"GRATULACJE!!! UDAŁO CI SIE UKOŃCZYĆ GRĘ!!!",
                     "KONIEC",JOptionPane.DEFAULT_OPTION);
             System.exit(0);
@@ -59,10 +59,8 @@ public class GPanel extends JPanel implements ActionListener {
 
         switch (answer) {
             case 0 -> {
-                System.out.println("Gramy dalej");
-                gloop.level+=1;
-                Level(gloop.level);
-                System.out.println(gloop.curwords);
+                gwords.level+=1;
+                Level(gwords.level);
             }
             case 1 -> System.exit(0);
         }
@@ -70,8 +68,7 @@ public class GPanel extends JPanel implements ActionListener {
     void Level(int level){
         switch(level){
             case 1 -> {
-                gloop.curwords.clear();
-                gloop.curwords.putAll(gloop.words);
+                gwords.lifes = 3;
                 enemy.dmg =50;
                 enemy.y=0;
                 enemy.x=0;
@@ -79,8 +76,7 @@ public class GPanel extends JPanel implements ActionListener {
                 enemy.yVel = 5;
             }
             case 2 -> {
-                gloop.curwords.clear();
-                gloop.curwords.putAll(gloop.words2);
+                gwords.lifes = 3;
                 enemy.dmg = 25;
                 enemy.y=0;
                 enemy.x=0;
@@ -88,8 +84,7 @@ public class GPanel extends JPanel implements ActionListener {
                 enemy.yVel = 11;
             }
             case 3 -> {
-                gloop.curwords.clear();
-                gloop.curwords.putAll(gloop.words3);
+                gwords.lifes = 3;
                 enemy.dmg = 20;
                 enemy.y=0;
                 enemy.x=0;
@@ -97,6 +92,6 @@ public class GPanel extends JPanel implements ActionListener {
                 enemy.yVel = 16;
             }
         }
-        gloop.gamestatus =1;
+        gwords.gamestatus =1;
     }
 }
