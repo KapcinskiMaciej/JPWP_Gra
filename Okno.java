@@ -7,18 +7,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Okno extends JFrame implements ActionListener{
+public class Okno extends JFrame{
     int f_x = 1280;
     int f_y=720;
-    JMenuItem exit = new JMenuItem("EXIT");
-    JMenuItem restart = new JMenuItem("RESTART");
-    GPanel panel = new GPanel(f_x, f_y);
-    JProgressBar hp = new JProgressBar(0, 100);
     Okno(String nazwa_okna){
         super(nazwa_okna);
+        //definicja pól tekstowych oraz konifguracja okna
+        GPanel panel = new GPanel(f_x, f_y);
         TextField txtup = new TextField();
         TextField txtdown = new TextField("Tutaj wpisz slowo", 1);
         TextField txtcenter = new TextField();
+        JMenuItem exit = new JMenuItem("EXIT");
+        JMenuItem restart = new JMenuItem("RESTART");
+        JProgressBar hp = new JProgressBar(0, 100);
         Interface(f_x,txtup,txtdown, hp, exit, restart, txtcenter);
         add(panel, BorderLayout.CENTER);
         this.setSize(f_x,f_y);
@@ -26,7 +27,9 @@ public class Okno extends JFrame implements ActionListener{
         this.setVisible(true);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        //ustawianie słowa początkowego
         panel.gwords.Wordset(txtup, panel.gwords.words, txtcenter);
+        //klikanie myszką
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -35,6 +38,22 @@ public class Okno extends JFrame implements ActionListener{
                 Hit(cur_x,cur_y,panel,txtdown,txtup, panel.gwords, hp, txtcenter);
             }
         });
+        //funkcja exit
+        exit.addActionListener(e -> {
+            if(e.getSource()==exit){
+                System.exit(1);
+            }
+        });
+        //funkcja reset
+        restart.addActionListener(e -> {
+            if(e.getSource()==restart){
+                panel.gwords.level=1;
+                panel.Level(panel.gwords.level);
+                hp.setValue(100);
+                repaint();
+            }
+        });
+
     }
 
     private void Interface(int f_x,TextField txtup,TextField txtdown, JProgressBar hp, JMenuItem exit,
@@ -44,18 +63,19 @@ public class Okno extends JFrame implements ActionListener{
         Font myfont = new Font("Open Sans", Font.BOLD, 20);
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("MENU");
+        //ustawienie właściwości menu
         menu.setFont(myfont);
         menu.setPreferredSize(new Dimension(f_x/2, 40));
         menu.add(exit);
         menu.add(restart);
-        exit.addActionListener(this);
-        restart.addActionListener(this);
         menuBar.add(menu);
+        //ustawienie właściwości paska życia
         hp.setStringPainted(true);
         hp.setForeground(Color.red);
         hp.setBackground(Color.lightGray);
         hp.setValue(100);
         hp.setFont(myfont);
+        //ustawienie właściwości pól tekstowych
         txtdown.setFont(myfont);
         txtup.setEditable(false);
         txtup.setFont(myfont);
@@ -85,7 +105,6 @@ public class Okno extends JFrame implements ActionListener{
         add(labeldown, BorderLayout.SOUTH);
         add(labelup, BorderLayout.NORTH);
     }
-
     private void Hit(int cur_x, int cur_y, GPanel panel, TextField txtdown, TextField txtup
             , GWords gwords, JProgressBar hp, TextField txtcenter)
     {
@@ -111,18 +130,6 @@ public class Okno extends JFrame implements ActionListener{
                             "niepoprawnych trafień/słów",
                     "KONIEC",JOptionPane.DEFAULT_OPTION);
             System.exit(0);
-        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==exit){
-            System.exit(1);
-        }
-        if(e.getSource()==restart){
-            panel.gwords.level = 1;
-            panel.Level(panel.gwords.level);
-            repaint();
         }
     }
 }

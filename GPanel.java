@@ -8,7 +8,6 @@ public class GPanel extends JPanel implements ActionListener {
     Timer timer;
     GEnemy enemy = new GEnemy();
     GWords gwords = new GWords();
-
     GPanel(int Frame_x, int Frame_y) {
         this.setSize(Frame_x, Frame_y);
         background_img = new ImageIcon("src\\gra\\graphics\\background.png").getImage();
@@ -16,8 +15,6 @@ public class GPanel extends JPanel implements ActionListener {
         timer.start();
         Level(gwords.level);
     }
-
-
     @Override
     public void paint(Graphics g) {
         Graphics2D gr2D = (Graphics2D) g;
