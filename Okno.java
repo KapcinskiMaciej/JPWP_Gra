@@ -2,17 +2,21 @@ package gra;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+/*
+* Klasa okno, odpowiedzialna bezpośrednio za rozłożenie,
+* oraz finalny wygląd okna oraz paneli znajdujących się wewnątrz.
+* Zawiera również wszystkie funkcje chociażby za kolizję przeciwnika z kursorem myszy,
+* wykrywanie pokonania przeciwnika czy korzystanie z funkcji menu.
+*/
 public class Okno extends JFrame{
+    //pola definiujące rozmiar okna
     int f_x = 1280;
     int f_y=720;
     Okno(String nazwa_okna){
         super(nazwa_okna);
-        //definicja pól tekstowych oraz konifguracja okna
+        //definicja składowych okna oraz konifguracja
         GPanel panel = new GPanel(f_x, f_y);
         TextField txtup = new TextField();
         TextField txtdown = new TextField("Tutaj wpisz slowo", 1);
@@ -81,6 +85,7 @@ public class Okno extends JFrame{
         txtup.setFont(myfont);
         txtcenter.setEditable(false);
         txtcenter.setFont(myfont);
+        // wywołanie funkcji odpowiedzialnej za konfiguracje składowych interfejsu
         Labels(menuBar, txtdown, txtup, hp, f_x, txtcenter);
     }
     private void Labels(JMenuBar menu, TextField txtdown, TextField txtup, JProgressBar hp, int f_x,
@@ -94,25 +99,27 @@ public class Okno extends JFrame{
         labeldown.add(menu);
         labeldown.add(txtdown);
         labeldown.setPreferredSize(new Dimension(f_x, 40));
-        //gorny label
+        //górny label
         labelup.setBackground(Color.black);
         labelup.setLayout(new GridLayout(1, 3));
         labelup.setPreferredSize(new Dimension(f_x, 40));
         labelup.add(txtup);
         labelup.add(txtcenter);
         labelup.add(hp);
-
+        //dodawanie labeli
         add(labeldown, BorderLayout.SOUTH);
         add(labelup, BorderLayout.NORTH);
     }
     private void Hit(int cur_x, int cur_y, GPanel panel, TextField txtdown, TextField txtup
             , GWords gwords, JProgressBar hp, TextField txtcenter)
     {
+        //wykrywanie kolizji
         if(panel.Colision(cur_x,cur_y) && gwords.Wordcheck(txtdown,txtup,gwords.words)){
             hp.setValue(hp.getValue()-panel.enemy.dmg);
             Dead(panel, hp);
             gwords.Wordset(txtup, gwords.words, txtcenter);
         }
+        //warunek nie trafienia lub/i wpisania niepoprawnego słowa
         else{
             panel.gwords.lifes-=1;
             Dead(panel, hp);
@@ -120,10 +127,12 @@ public class Okno extends JFrame{
         }
     }
     private void Dead(GPanel panel, JProgressBar hp){
+        //warunek na pokonanie przeciwnika
         if(hp.getValue()<=0){
             panel.WhatNext();
             hp.setValue(100);
         }
+        //warunek na utratę szans przez gracza
         if(panel.gwords.lifes<=0){
             panel.gwords.gamestatus = 0;
             JOptionPane.showConfirmDialog(null,"Przegrałeś, uzyskano zbyt dużą liczbę " +

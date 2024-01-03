@@ -3,24 +3,31 @@ package gra;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+/*
+* Klasa GPanel jest odpowiedzialana za rysowanie przeciwników na ekranie,
+* pętlę gry, ustawianie parametrów przeciwnika w zależności od
+* danej sytuacji występującej w programie oraz rozstrzyganie wyborów gracza.
+*/
 public class GPanel extends JPanel implements ActionListener {
     Image background_img,curimg;
-    Timer timer;
     GEnemy enemy = new GEnemy();
     GWords gwords = new GWords();
     GPanel(int Frame_x, int Frame_y) {
         this.setSize(Frame_x, Frame_y);
         background_img = new ImageIcon("src\\gra\\graphics\\backgroundfinal.png").getImage();
+        Timer timer;
         timer = new Timer(10,this);
         timer.start();
         Level(gwords.level);
     }
+    //malowanie przeciwnika oraz tła
     @Override
     public void paint(Graphics g) {
         Graphics2D gr2D = (Graphics2D) g;
         gr2D.drawImage(background_img, 0, 0, this.getWidth(), this.getHeight(), null);
         gr2D.drawImage(enemy.Images(curimg, this.gwords.level), enemy.x, enemy.y, null);
     }
+    //metoda w której następuje ruch przeciwnika
     private void Loop(int status){
         if(status == 1) {
 
@@ -35,14 +42,18 @@ public class GPanel extends JPanel implements ActionListener {
             repaint();
         }
     }
+    //metoda definiująca hitbox (pole reagowania na trafienie) przeciwnika
     boolean Colision(int cur_x, int cur_y) {
         return cur_x >= enemy.x && cur_x <= enemy.x + enemy.Images(curimg, gwords.level).getWidth(null) &&
                 cur_y >= enemy.y && cur_y <= enemy.y + enemy.Images(curimg, gwords.level).getHeight(null);
     }
+    //główna pętla gry pobudzana przez kolejne "uderzenia" zegara,
+    //modyfikacja opóźnienia zegara pozwala na globalne zmiejszanie prędkości przeciwników
     @Override
     public void actionPerformed(ActionEvent e) {
         Loop(gwords.gamestatus);
     }
+    //fragment kodu odpowiedzialny za reakcje na wybory gracza związane z oknami pop-up
     void WhatNext(){
         gwords.gamestatus = 0;
         if(gwords.level == 3){
@@ -62,6 +73,7 @@ public class GPanel extends JPanel implements ActionListener {
             case 1 -> System.exit(0);
         }
     }
+    //metoda definiująca parametry przeciwników w zależności od poziomu(łatwa modyfikacja)
     void Level(int level){
         switch(level){
             case 1 -> {
