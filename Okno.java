@@ -127,9 +127,9 @@ public class Okno extends JFrame{
         if(panel.gwords.lifes<=0){
             panel.gwords.gamestatus = 0;
             JOptionPane.showConfirmDialog(null,"Przegrałeś, uzyskano zbyt dużą liczbę " +
-                            "niepoprawnych trafień/słów",
+                            "niepoprawnych trafień/słów. Zrestartuj grę lub wyjdź (MENU)",
                     "KONIEC",JOptionPane.DEFAULT_OPTION);
-            System.exit(0);
+            //System.exit(0);
         }
     }
 }

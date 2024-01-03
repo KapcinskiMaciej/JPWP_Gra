@@ -10,7 +10,7 @@ public class GPanel extends JPanel implements ActionListener {
     GWords gwords = new GWords();
     GPanel(int Frame_x, int Frame_y) {
         this.setSize(Frame_x, Frame_y);
-        background_img = new ImageIcon("src\\gra\\graphics\\background.png").getImage();
+        background_img = new ImageIcon("src\\gra\\graphics\\backgroundfinal.png").getImage();
         timer = new Timer(10,this);
         timer.start();
         Level(gwords.level);
@@ -69,7 +69,7 @@ public class GPanel extends JPanel implements ActionListener {
                 enemy.dmg =50;
                 enemy.y=0;
                 enemy.x=0;
-                enemy.xVel = 6;
+                enemy.xVel = 3;
                 enemy.yVel = 5;
             }
             case 2 -> {
@@ -77,16 +77,16 @@ public class GPanel extends JPanel implements ActionListener {
                 enemy.dmg = 25;
                 enemy.y=0;
                 enemy.x=0;
-                enemy.xVel = 10;
-                enemy.yVel = 11;
+                enemy.xVel = 7;
+                enemy.yVel = 10;
             }
             case 3 -> {
                 gwords.lifes = 3;
                 enemy.dmg = 20;
                 enemy.y=0;
                 enemy.x=0;
-                enemy.xVel = 15;
-                enemy.yVel = 16;
+                enemy.xVel = 10;
+                enemy.yVel = 13;
             }
         }
         gwords.gamestatus =1;
